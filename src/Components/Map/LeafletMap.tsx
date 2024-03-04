@@ -1,5 +1,5 @@
 import React from 'react';
-import L, { LatLng, LatLngBounds, LeafletEvent, LeafletEventHandlerFn } from 'leaflet';
+import L, { LatLng, LatLngBounds, LeafletEvent } from 'leaflet';
 import '../../../node_modules/leaflet/dist/leaflet.css';
 import './index.css';
 import { APP_CONSTANTS } from '../../Constants/AppConstants';

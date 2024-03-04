@@ -1,4 +1,3 @@
-import React from 'react';
 import { MainContainer } from './Components/MainContainer/MainContainer';
 import { MapLocationProvider } from './Contexts/MapLocationProvider';
 
