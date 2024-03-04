@@ -82,7 +82,7 @@ export function LocationsList() {
       elementScroller(locationData.markerId);
     });
 
-  }, [])
+  }, [mapInstanceRef])
 
   React.useEffect(() => {
     locationDataList.forEach((locationData: any, index: number) => {

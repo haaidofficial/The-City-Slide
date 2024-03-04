@@ -1,5 +1,5 @@
 import React from 'react';
-import L, { LatLng, LatLngBounds, LeafletEvent } from 'leaflet';
+import L, { LatLngBounds, LeafletEvent } from 'leaflet';
 import '../../../node_modules/leaflet/dist/leaflet.css';
 import './index.css';
 import { APP_CONSTANTS } from '../../Constants/AppConstants';
@@ -20,6 +20,13 @@ export function LeafletMap() {
     const { position, geoLocationError, setBoundLatLng, mapInstanceRef } = useMapLocationContext();
     const [toastAlertStatus, setToastAlertStatus] = React.useState({ show: false, message: '', variant: '' });
 
+    const getLatLngBounds = React.useCallback((bounds: LatLngBounds) => {
+        setBoundLatLng({
+            ne: bounds.getNorthEast(),
+            sw: bounds.getSouthWest()
+        });
+    }, []);
+    
     React.useEffect(() => {
         mapInstanceRef.current = L.map('map');
 
@@ -45,9 +52,9 @@ export function LeafletMap() {
 
         }
 
-    }, [mapInstanceRef]);
+    }, [mapInstanceRef, getLatLngBounds]);
 
-    
+
     React.useEffect(() => {
 
         initOpenSteetMap(position);
@@ -64,12 +71,8 @@ export function LeafletMap() {
 
 
 
-    function getLatLngBounds(bounds: LatLngBounds) {
-        setBoundLatLng({
-            ne: bounds.getNorthEast(),
-            sw: bounds.getSouthWest()
-        });
-    }
+
+
 
 
     function moveMapHandler(event: LeafletEvent) {
