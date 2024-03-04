@@ -1,4 +1,3 @@
-import * as React from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -23,10 +22,10 @@ const criteria = [{
 
 
 export function CriteriaSelector() {
-    const [age, setAge] = React.useState('');
+    
 
     const handleChange = (event: SelectChangeEvent) => {
-        setAge(event.target.value);
+       
     };
 
 

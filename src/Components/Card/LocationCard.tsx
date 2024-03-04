@@ -187,8 +187,8 @@ export function LocationCard({ data }: LocationCardProp) {
                 </CardContent>
                 <CardActions>
 
-                    <a href={data.write_review} target='_blank'><Button size="small">SEE PUBLIC</Button></a>
-                    <a href={data.website} target='_blank'><Button size="small">REVIEWS WEBSITE</Button></a>
+                    <a href={data.write_review} target='_blank'  rel="noopener noreferrer"><Button size="small">SEE PUBLIC</Button></a>
+                    <a href={data.website} target='_blank' rel="noopener noreferrer"><Button size="small">REVIEWS WEBSITE</Button></a>
                 </CardActions>
             </Card>
         </>

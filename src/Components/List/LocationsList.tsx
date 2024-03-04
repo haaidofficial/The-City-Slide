@@ -39,17 +39,60 @@ export function LocationsList() {
     }
   }, [position, boundLatLng]);
 
+  const setMarkerOnMap = React.useCallback((lat: number, lng: number, locationData: any) => {
 
+    let photo = '';
+    if (locationData.photo) {
+      if (locationData.photo.images) {
+        if (locationData.photo.images.small) {
+          if (locationData.photo.images.small.url) {
+            photo = locationData.photo.images.small.url;
+          }
+        }
+      }
+    }
+
+    const ratings = generateStarRatings(locationData.rating);
+   
+    const html = `<div class="place-marker" id=location-data-marker-${locationData.markerId}>
+                        <div class="marker-card-image">
+                            <img src=${photo} style="width: 120px; height: 120px">
+                            <div class="marker-data-header">
+                            <span class="marker-card-title small-text on-map">
+                            <b>${locationData.name}</b>
+                            </span>
+                            </div>
+                        </div>
+                        <div class="marker-card-content">
+                           ${ratings}
+                        </div>
+                  </div>`;
+
+    const icon = L.divIcon({
+      className: 'custom-div-icon',
+      html: html,
+      iconSize: [30, 42],
+      iconAnchor: [15, 42]
+    });
+
+    L.marker([lat, lng], { icon: icon }).addTo(mapInstanceRef.current);
+
+    document.querySelector(`#location-data-marker-${locationData.markerId}`)?.addEventListener('click', () => {
+
+      elementScroller(locationData.markerId);
+    });
+
+  }, [])
 
   React.useEffect(() => {
     locationDataList.forEach((locationData: any, index: number) => {
       if (locationData.latitude && locationData.longitude) {
-        setMarkerOnMap(parseFloat(locationData.latitude), parseFloat(locationData.longitude), locationData, index)
+        setMarkerOnMap(parseFloat(locationData.latitude), parseFloat(locationData.longitude), locationData)
       }
 
 
     });
-  }, [locationDataList]);
+  }, [locationDataList, setMarkerOnMap]);
 
 
   async function getPlaceDataHanler(position: Location, positionBound: BoundLatLng) {
@@ -91,51 +134,8 @@ export function LocationsList() {
     }
   }
 
-  function setMarkerOnMap(lat: number, lng: number, locationData: any, index: number) {
-
-    let photo = '';
-    if (locationData.photo) {
-      if (locationData.photo.images) {
-        if (locationData.photo.images.small) {
-          if (locationData.photo.images.small.url) {
-            photo = locationData.photo.images.small.url;
-          }
-        }
-      }
-    }
-
-    const ratings = generateStarRatings(locationData.rating);
-    const markerId = uuidv4();
-    const html = `<div class="place-marker" id=location-data-marker-${locationData.markerId}>
-                        <div class="marker-card-image">
-                            <img src=${photo} style="width: 120px; height: 120px">
-                            <div class="marker-data-header">
-                            <span class="marker-card-title small-text on-map">
-                            <b>${locationData.name}</b>
-                            </span>
-                            </div>
-                        </div>
-                        <div class="marker-card-content">
-                           ${ratings}
-                        </div>
-                  </div>`;
-
-    const icon = L.divIcon({
-      className: 'custom-div-icon',
-      html: html,
-      iconSize: [30, 42],
-      iconAnchor: [15, 42]
-    });
-
-    L.marker([lat, lng], { icon: icon }).addTo(mapInstanceRef.current);
-
-    document.querySelector(`#location-data-marker-${locationData.markerId}`)?.addEventListener('click', () => {
-
-      elementScroller(locationData.markerId);
-    });
 
 
-  }
 
 
   function elementScroller(markerId: string) {
