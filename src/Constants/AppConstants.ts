@@ -1,0 +1,8 @@
+const OPEN_STREET_MAP_CDN = process.env.REACT_APP_OPEN_STREET_MAP_CDN;
+
+
+
+
+export const APP_CONSTANTS = {
+    OPEN_STREET_MAP_CDN
+}
