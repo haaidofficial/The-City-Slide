@@ -25,6 +25,7 @@ export function useGeoLocation() {
 
 
     return {
+        setPosition,
         position,
         geoLocationError
     }

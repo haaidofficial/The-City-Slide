@@ -11,6 +11,7 @@ import { useMapLocationContext } from '../../Contexts/MapLocationProvider';
 import L, { LatLng } from 'leaflet';
 import fullStarIcon from '../../assets/icons/full-star.png';
 import halfStarIcon from '../../assets/icons/half-star.png';
+import serverErrorIcon from '../../assets/icons/server-error-icon.png';
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -53,7 +54,7 @@ export function LocationsList() {
     }
 
     const ratings = generateStarRatings(locationData.rating);
-   
+
     const html = `<div class="place-marker" id=location-data-marker-${locationData.markerId}>
                         <div class="marker-card-image">
                             <img src=${photo} style="width: 120px; height: 120px">
@@ -124,11 +125,16 @@ export function LocationsList() {
           setLocationDataList(data);
           setLoadingStatus({ display: 'idle' });
         }
+        else if (response.message) {
+          if (response.message.toLowerCase().includes('you have exceeded the monthly quota for requests on your current plan')) {
+            setLoadingStatus({ display: 'error' });
+          }
+        }
       }
 
 
     } catch (error) {
-      console.log(error);
+      console.log(error, 'location list error');
       setLoadingStatus({ display: 'idle' });
 
     }
@@ -198,7 +204,15 @@ export function LocationsList() {
         <CriteriaSelector />
 
       </Box>
-
+      {loadingStatus.display === 'error' && <Box sx={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+        <img src={serverErrorIcon} style={{width: '150px', height: '150px' }} alt='error icon' title='Server Error' />
+      </Box>}
       <Box sx={{ padding: '0 20px' }}>
         <List
           sx={{
@@ -223,7 +237,6 @@ export function LocationsList() {
               </li>
             })
           }
-          { }
         </List>
 
       </Box>

@@ -17,6 +17,7 @@ type BoundLatLng = {
 }
 
 type MapLocationContextType = {
+    setPosition: Function;
     position: Location | EmptyObj;
     boundLatLng: BoundLatLng | null;
     geoLocationError: string;
@@ -25,6 +26,7 @@ type MapLocationContextType = {
 }
 
 const MapLocationContext = React.createContext<MapLocationContextType>({
+    setPosition: Function,
     position: {},
     boundLatLng: null,
     geoLocationError: '',
@@ -37,11 +39,12 @@ type EmptyObj = Record<PropertyKey, never>;
 
 export function MapLocationProvider({ children }: MapLocationProviderProps) {
 
-    const { position, geoLocationError } = useGeoLocation();
+    const { position, setPosition, geoLocationError } = useGeoLocation();
     const [boundLatLng, setBoundLatLng] = React.useState<BoundLatLng | null>(null);
     const mapInstanceRef = React.useRef<any>();
 
     const contextProps = {
+        setPosition,
         position,
         geoLocationError,
         boundLatLng,
